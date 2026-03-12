@@ -15,7 +15,7 @@ export const products: Product[] = [
     tagline: "Turn waitlists into momentum.",
     description:
       "Launch smarter with a referral-powered waitlist. Collect early interest, reward sharing, and build a ready-to-buy audience before you ship.",
-    href: "https://waitboost.com",
+    href: "https://waitboost.vercel.app",
     status: "live",
     category: "Growth",
   },
