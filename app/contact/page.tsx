@@ -1,16 +1,51 @@
-import type { Metadata } from "next";
+"use client";
 
-// ─── TODO: Replace with your actual support email ─────────────────────────────
+import { useState } from "react";
+
 const SUPPORT_EMAIL = "hello@satosushi.co";
-// ─────────────────────────────────────────────────────────────────────────────
-
-export const metadata: Metadata = {
-  title: "Contact",
-  description:
-    "Contact Satosushi for product questions, billing support, or general inquiries. We respond within one business day.",
-};
 
 export default function ContactPage() {
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
+  const [status, setStatus] = useState("idle");
+  const [errorMsg, setErrorMsg] = useState("");
+
+  const handleChange = (e) => {
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus("loading");
+    setErrorMsg("");
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setErrorMsg(data.error || "Failed to send. Please try again.");
+        setStatus("error");
+        return;
+      }
+
+      setStatus("success");
+      setForm({ name: "", email: "", subject: "", message: "" });
+    } catch {
+      setErrorMsg("An unexpected error occurred. Please try again.");
+      setStatus("error");
+    }
+  };
+
   return (
     <div className="max-w-5xl mx-auto px-6 py-24">
       {/* Header */}
@@ -31,83 +66,118 @@ export default function ContactPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-20">
         {/* Form */}
         <div>
-          <form className="space-y-6">
-            <div>
-              <label
-                htmlFor="name"
-                className="block text-xs font-medium text-neutral-500 mb-2 uppercase tracking-widest"
+          {status === "success" ? (
+            <div className="rounded-lg border border-neutral-200 bg-neutral-50 px-6 py-10 text-center">
+              <div className="text-2xl mb-3">✉️</div>
+              <h2 className="text-lg font-semibold text-neutral-900 mb-2">
+                Message sent!
+              </h2>
+              <p className="text-sm text-neutral-500 mb-6">
+                We received your message and will reply within one business day.
+              </p>
+              <button
+                onClick={() => setStatus("idle")}
+                className="text-sm text-neutral-600 underline underline-offset-2 hover:opacity-60 transition-opacity"
               >
-                Name
-              </label>
-              <input
-                id="name"
-                type="text"
-                name="name"
-                autoComplete="name"
-                placeholder="Your name"
-                className="w-full px-4 py-3 text-sm rounded-lg border border-neutral-200 bg-white placeholder:text-neutral-400 focus:outline-none focus:border-neutral-400 transition-colors"
-              />
+                Send another message
+              </button>
             </div>
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-xs font-medium text-neutral-500 mb-2 uppercase tracking-widest"
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div>
+                <label
+                  htmlFor="name"
+                  className="block text-xs font-medium text-neutral-500 mb-2 uppercase tracking-widest"
+                >
+                  Name
+                </label>
+                <input
+                  id="name"
+                  type="text"
+                  name="name"
+                  autoComplete="name"
+                  placeholder="Your name"
+                  required
+                  value={form.name}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 text-sm rounded-lg border border-neutral-200 bg-white placeholder:text-neutral-400 focus:outline-none focus:border-neutral-400 transition-colors"
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="email"
+                  className="block text-xs font-medium text-neutral-500 mb-2 uppercase tracking-widest"
+                >
+                  Email
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  name="email"
+                  autoComplete="email"
+                  placeholder="you@example.com"
+                  required
+                  value={form.email}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 text-sm rounded-lg border border-neutral-200 bg-white placeholder:text-neutral-400 focus:outline-none focus:border-neutral-400 transition-colors"
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="subject"
+                  className="block text-xs font-medium text-neutral-500 mb-2 uppercase tracking-widest"
+                >
+                  Subject
+                </label>
+                <select
+                  id="subject"
+                  name="subject"
+                  required
+                  value={form.subject}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 text-sm rounded-lg border border-neutral-200 bg-white text-neutral-700 focus:outline-none focus:border-neutral-400 transition-colors appearance-none"
+                >
+                  <option value="" disabled>
+                    Select a topic
+                  </option>
+                  <option>Product question</option>
+                  <option>Billing or refund</option>
+                  <option>Partnership or press</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div>
+                <label
+                  htmlFor="message"
+                  className="block text-xs font-medium text-neutral-500 mb-2 uppercase tracking-widest"
+                >
+                  Message
+                </label>
+                <textarea
+                  id="message"
+                  name="message"
+                  rows={6}
+                  placeholder="Tell us what's on your mind..."
+                  required
+                  value={form.message}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 text-sm rounded-lg border border-neutral-200 bg-white placeholder:text-neutral-400 focus:outline-none focus:border-neutral-400 transition-colors resize-none"
+                />
+              </div>
+
+              {status === "error" && (
+                <p className="text-sm text-red-500">{errorMsg}</p>
+              )}
+
+              <button
+                type="submit"
+                disabled={status === "loading"}
+                className="w-full px-5 py-2.5 bg-neutral-900 text-white text-sm font-medium rounded-lg hover:bg-neutral-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Email
-              </label>
-              <input
-                id="email"
-                type="email"
-                name="email"
-                autoComplete="email"
-                placeholder="you@example.com"
-                className="w-full px-4 py-3 text-sm rounded-lg border border-neutral-200 bg-white placeholder:text-neutral-400 focus:outline-none focus:border-neutral-400 transition-colors"
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="subject"
-                className="block text-xs font-medium text-neutral-500 mb-2 uppercase tracking-widest"
-              >
-                Subject
-              </label>
-              <select
-                id="subject"
-                name="subject"
-                defaultValue=""
-                className="w-full px-4 py-3 text-sm rounded-lg border border-neutral-200 bg-white text-neutral-700 focus:outline-none focus:border-neutral-400 transition-colors appearance-none"
-              >
-                <option value="" disabled>
-                  Select a topic
-                </option>
-                <option>Product question</option>
-                <option>Billing or refund</option>
-                <option>Partnership or press</option>
-                <option>Other</option>
-              </select>
-            </div>
-            <div>
-              <label
-                htmlFor="message"
-                className="block text-xs font-medium text-neutral-500 mb-2 uppercase tracking-widest"
-              >
-                Message
-              </label>
-              <textarea
-                id="message"
-                name="message"
-                rows={6}
-                placeholder="Tell us what's on your mind..."
-                className="w-full px-4 py-3 text-sm rounded-lg border border-neutral-200 bg-white placeholder:text-neutral-400 focus:outline-none focus:border-neutral-400 transition-colors resize-none"
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full px-5 py-2.5 bg-neutral-900 text-white text-sm font-medium rounded-lg hover:bg-neutral-700 transition-colors"
-            >
-              Send message
-            </button>
-          </form>
+                {status === "loading" ? "Sending…" : "Send message"}
+              </button>
+            </form>
+          )}
         </div>
 
         {/* Info */}
