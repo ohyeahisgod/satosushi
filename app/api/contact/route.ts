@@ -1,7 +1,7 @@
 import { Resend } from "resend";
 import { NextResponse } from "next/server";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend(process.env.RESEND_API_KEY ?? "");
 
 export async function POST(req: Request) {
   try {
@@ -17,7 +17,7 @@ export async function POST(req: Request) {
     const { error } = await resend.emails.send({
       from: "Satosushi Contact Form <hello@satosushi.co>",
       to: ["hello@satosushi.co"],
-      replyTo: email,
+      reply_to: email,
       subject: `[Contact] ${subject} — from ${name}`,
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #333;">

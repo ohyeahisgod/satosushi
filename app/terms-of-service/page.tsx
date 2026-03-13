@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import LegalLayout from "@/components/LegalLayout";
 
 export const metadata: Metadata = {
@@ -7,7 +8,7 @@ export const metadata: Metadata = {
     "Terms and conditions governing access to and use of Satosushi products and services.",
 };
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
     <section className="mb-10">
       <h2 className="text-lg font-semibold text-neutral-900 mb-3">{title}</h2>

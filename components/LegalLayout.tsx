@@ -1,8 +1,10 @@
+import type { ReactNode } from "react";
+
 interface LegalLayoutProps {
   badge: string;
   title: string;
   lastUpdated: string;
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export default function LegalLayout({
