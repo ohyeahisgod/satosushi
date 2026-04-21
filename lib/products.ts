@@ -10,14 +10,14 @@ export interface Product {
 
 export const products: Product[] = [
   {
-    id: "waitboost",
-    name: "WaitBoost",
-    tagline: "Turn waitlists into momentum.",
+    id: "scanta",
+    name: "Scanta",
+    tagline: "The QR code, reconsidered.",
     description:
-      "Launch smarter with a referral-powered waitlist. Collect early interest, reward sharing, and build a ready-to-buy audience before you ship.",
-    href: "https://waitboost.vercel.app",
+      "Generate static QR codes or dynamic ones you can edit anytime. Track scans with geographic analytics and map your own domain — perfect for campaigns and printed materials that need to evolve.",
+    href: "https://scanta.satosushi.co",
     status: "live",
-    category: "Growth",
+    category: "Marketing",
   },
   {
     id: "formkit",
