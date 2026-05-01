@@ -20,6 +20,26 @@ export const products: Product[] = [
     category: "Marketing",
   },
   {
+    id: "sitepulse",
+    name: "SitePulse",
+    tagline: "Know the second your site goes down.",
+    description:
+      "Flat-priced uptime monitoring for indie devs and small teams. Monitor websites and APIs, get email alerts on failures, and share a public status page with customers.",
+    href: "https://sitepulse.satosushi.co",
+    status: "live",
+    category: "Monitoring",
+  },
+  {
+    id: "pageinsight",
+    name: "PageInsight",
+    tagline: "Real-time analytics for Notion pages.",
+    description:
+      "Track views, sessions, live readers, locations, and time-on-page for public or shared Notion pages with a tiny embed-based tracker.",
+    href: "https://pageinsight.satosushi.co",
+    status: "live",
+    category: "Analytics",
+  },
+  {
     id: "formkit",
     name: "FormKit",
     tagline: "Beautiful forms, zero friction.",
