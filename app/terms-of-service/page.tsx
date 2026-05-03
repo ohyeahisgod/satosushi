@@ -6,6 +6,9 @@ export const metadata: Metadata = {
   title: "Terms of Service",
   description:
     "Terms and conditions governing access to and use of Satosushi products and services.",
+  alternates: {
+    canonical: "/terms-of-service",
+  },
 };
 
 function Section({ title, children }: { title: string; children: ReactNode }) {

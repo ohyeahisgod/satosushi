@@ -5,7 +5,10 @@ import { products } from "@/lib/products";
 export const metadata: Metadata = {
   title: "Products",
   description:
-    "Browse all software products built and maintained by Satosushi. Simple, focused tools for online businesses.",
+    "Browse software products built and maintained by Satosushi. Simple, focused tools for online businesses.",
+  alternates: {
+    canonical: "/products",
+  },
 };
 
 export default function ProductsPage() {

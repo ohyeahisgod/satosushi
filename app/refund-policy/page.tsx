@@ -6,6 +6,9 @@ export const metadata: Metadata = {
   title: "Refund Policy",
   description:
     "Satosushi's refund and cancellation policy for all subscription products.",
+  alternates: {
+    canonical: "/refund-policy",
+  },
 };
 
 function Section({ title, children }: { title: string; children: ReactNode }) {

@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: "About",
   description:
     "Satosushi is a software company that builds and maintains independent SaaS products for online businesses.",
+  alternates: {
+    canonical: "/about",
+  },
 };
 
 export default function AboutPage() {
